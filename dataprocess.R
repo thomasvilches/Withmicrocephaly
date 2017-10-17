@@ -1,4 +1,4 @@
-setwd("/home/thomas/Doutorado/PDSEproject/prog/WithMicrocephaly2/R19/teste6/")
+setwd("/home/thomas/Doutorado/PDSEproject/prog/WithMicrocephaly2/server/test1/")
 
 x1=read.table("NoM0.dat",h=F)
 x2=read.table("NoM1.dat",h=F)
@@ -13,8 +13,9 @@ mean(x$V1)
 x=x[x$V1+x$V2+x$V3>0,]
 mean(x$V1)
 
+################################################################################3
 
-y=read.table("/home/thomas/Doutorado/PDSEproject/prog/WithMicrocephaly2/symp0.dat",h=F)
+y=read.table("/home/thomas/Doutorado/PDSEproject/prog/WithMicrocephaly2/symp3.dat",h=F)
 
 y=as.matrix(y)
 
@@ -46,3 +47,7 @@ for(i in 2:ncol(y)){
   
 }
 lines(a,y2,col="black",lwd=3)
+
+preg=read.table("/home/thomas/Doutorado/PDSEproject/prog/WithMicrocephaly2/server/test5/statepreg.dat")
+preg=preg[preg$V1!=0,]
+preg

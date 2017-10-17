@@ -43,7 +43,7 @@ main(int argc,char *argv[]){
   /////starting simulations
 
   //getchar();
-  sprintf(namecore,"R19/teste6/NoM%d.dat",core);
+  sprintf(namecore,"R19/teste7/NoM%d.dat",core);
 
   arq=fopen(namecore,"w");
 
@@ -51,7 +51,7 @@ main(int argc,char *argv[]){
     struct Human *H=malloc(N*sizeof(struct Human));//Hvector(0,N-1);
     struct Mosquito *M=malloc(NM*sizeof(struct Mosquito));//Mvector(0,NM-1);
 
-    sprintf(name,"R19/teste6/tt%d.dat",sim);//name of the file
+    sprintf(name,"R19/teste7/tt%d.dat",sim);//name of the file
 
     for(i=0;i<4;i++){
       NumPregInf[i]=0;

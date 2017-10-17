@@ -56,12 +56,13 @@
 #define Prob_Microcephaly_2_min 0.019
 
 
-#define Vac_Cover_Norm 0.0//0.7
-#define Vac_Cover_Preg 0.0//0.9
+#define Vac_Cover_Norm 0.0
+#define Vac_Cover_Preg 0.0
 #define Time_of_immunization 0
 #define Min_age_vac 9
 #define Max_age_vac 45
 #define Min_age_vac_preg 15
 #define Max_age_vac_preg 50
+#define vac_eff 0.0
 
 #define NR_END 1

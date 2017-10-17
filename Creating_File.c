@@ -2,7 +2,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-#define Num 200
+#define Num 2000
 #define lines 728
 
 float **Alocar_matriz_inteira(int m,int n);
@@ -15,10 +15,10 @@ main(){
 
   Symp=Alocar_matriz_inteira(lines,Num);
   Asymp=Alocar_matriz_inteira(lines,Num);
-  arq=fopen("symp0.dat","w");
-  Asym=fopen("asymp0.dat","w");
+  arq=fopen("symp4.dat","w");
+  Asym=fopen("asymp4.dat","w");
   for(i=0;i<Num;i++){
-    sprintf(name,"R19/teste6/tt%d.dat",i);
+    sprintf(name,"server/test4/tt%d.dat",i);
 
     ar=fopen(name,"r");
 

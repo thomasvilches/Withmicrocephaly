@@ -1,6 +1,7 @@
 void vaccination(struct Human *H,int VacVector[4]){
 
     int i,numVac,rd,numPregVac;
+    float rn;
 
     int *VacSus=malloc(N*sizeof(int));
     int *VacSusPreg=malloc(N*sizeof(int));
@@ -33,8 +34,12 @@ void vaccination(struct Human *H,int VacVector[4]){
     while(i<Vac_Cover_Norm*numVac){
         rd=numVac*(rand()/(RAND_MAX+1.));
         if(H[VacSus[rd]].Vaccination==0){
-            H[VacSus[rd]].Vaccination=1;
-            H[VacSus[rd]].timevaccination=0;
+
+            rn=(float)rand()/RAND_MAX;
+            if(rn<vac_eff){
+                H[VacSus[rd]].Vaccination=1;
+                H[VacSus[rd]].timevaccination=0;
+            }
             i++;
             VacVector[0]++;
         }
@@ -44,8 +49,11 @@ void vaccination(struct Human *H,int VacVector[4]){
     while(i<Vac_Cover_Preg*numPregVac){
         rd=numPregVac*(rand()/(RAND_MAX+1.));
         if(H[VacSusPreg[rd]].Vaccination==0){
-            H[VacSusPreg[rd]].Vaccination=2;
-            H[VacSusPreg[rd]].timevaccination=0;
+            rn=(float)rand()/RAND_MAX;
+            if(rn<vac_eff){
+                H[VacSusPreg[rd]].Vaccination=2;
+                H[VacSusPreg[rd]].timevaccination=0;
+            }
             i++;
             VacVector[1]++;
         }
