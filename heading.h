@@ -27,6 +27,8 @@ struct Human{
   int Vaccination;
   int timevaccination;
   int agedays;
+  int InfTrim;
+  int VacEff
 };
 
 struct Mosquito{
@@ -51,7 +53,7 @@ void setup_pregnant(struct Human *H,int NumberInAge[7],int **PregAgeGroup,float 
 void vaccination(struct Human *H,int VacVector[4]);
 void increase_timestateH(struct Human *H,int VacVector[4]);
 void update_human(struct Human *H,int UpDating[4],int NumPregInf[4],int VacVector[4]);
-int update_pregnant(struct Human *H,int NumberInAge[7],int **PregAgeGroup,int NumPregInf[4],int VacVector[4]);
+int update_pregnant(struct Human *H,int NumberInAge[7],int **PregAgeGroup,int NumPregInf[4],int VacVector[4],int PregBaby[4]);
 
 
 void set_up_mosquito(struct Mosquito *M,int i,float dist[2][60]);
@@ -65,7 +67,7 @@ void update_mosquito(struct Mosquito *M);
 void BiteTransmission(struct Human *H,struct Mosquito *M);
 void Sexual_interaction(struct Human *H);
 void ProbMicrocephaly(struct Human *H,int i,int NumPregInf[4]);
-int CountingLast(struct Human *H);
+int CountingLast(struct Human *H,int PregBaby[4]);
 
 
 int deleteMember(int *A,int del,int num);

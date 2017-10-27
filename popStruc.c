@@ -42,6 +42,8 @@ void set_up_humans(struct Human H[N]){
     H[i].timevaccination=-1;
     H[i].agedays=365*(rand()/(RAND_MAX+1.));
     H[i].PregnantAgeGroup=-1;
+    H[i].InfTrim=-1;
+    H[i].VacEff=(vac_eff_max-vac_eff_min)*((float)rand()/RAND_MAX)+vac_eff_min;
   }
 
   for(i=0;i<N;i++){

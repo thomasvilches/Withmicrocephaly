@@ -14,10 +14,11 @@ main(int argc,char *argv[]){
 
       //struct Human *H;
       //struct Mosquito *M;
-    int i,j,controlSeason,timecount,d,rn,susc,latent,symp,asymp,sympiso,rec,numberofseason,sim,begin,end,seed,UpDating[4],core,NumberInAge[7],**PregAgeGroup,number_of_microcephaly,aux2,aux3,aux4,NumPregInf[4],VacVector[4];
+    int i,j,controlSeason,timecount,d,rn,susc,latent,symp,asymp,sympiso,rec,numberofseason,sim,begin,end,seed,UpDating[4],core,NumberInAge[7],**PregAgeGroup,number_of_microcephaly,aux2,aux3,aux4;
+    int NumPregInf[4],VacVector[4],PregBaby[4];
     float dist[2][60],rd,distAge[60],soma,distPreg[7];
-    FILE *ar,*arq,*arqu;
-    char name[30],namecore[30];
+    FILE *ar,*arq,*arqu,*arquPregBaby;
+    char name[30],namecore[30],namePreg[30],directory[30];
 
     arqu=fopen("distPreg.dat","r");
     ar=fopen("summer.txt","r");
@@ -43,7 +44,8 @@ main(int argc,char *argv[]){
   /////starting simulations
 
   //getchar();
-  sprintf(namecore,"R19/teste7/NoM%d.dat",core);
+  sprintf(directory,"teste/");
+  sprintf(namecore,"%sNoM%d.dat",directory,core);
 
   arq=fopen(namecore,"w");
 
@@ -51,7 +53,10 @@ main(int argc,char *argv[]){
     struct Human *H=malloc(N*sizeof(struct Human));//Hvector(0,N-1);
     struct Mosquito *M=malloc(NM*sizeof(struct Mosquito));//Mvector(0,NM-1);
 
-    sprintf(name,"R19/teste7/tt%d.dat",sim);//name of the file
+    sprintf(namePreg,"%sPregBaby%d.dat",directory,sim);
+    sprintf(name,"%stt%d.dat",directory,sim);//name of the file
+
+    arquPregBaby=fopen(namePreg,"w");
 
     for(i=0;i<4;i++){
       NumPregInf[i]=0;
@@ -148,7 +153,10 @@ main(int argc,char *argv[]){
 
                 Sexual_interaction(H);
 
-                number_of_microcephaly=number_of_microcephaly+update_pregnant(H,NumberInAge,PregAgeGroup,NumPregInf,VacVector);
+                PregBaby[0]=PregBaby[1]=PregBaby[2]=PregBaby[3]=0;
+                number_of_microcephaly=number_of_microcephaly+update_pregnant(H,NumberInAge,PregAgeGroup,NumPregInf,VacVector,PregBaby);
+
+                fprintf(arquPregBaby,"%d %d %d %d %d\n",182*numberofseason+timecount,PregBaby[0],PregBaby[1],PregBaby[2],PregBaby[3]);
 
                 increase_timestateH(H,VacVector);
 
@@ -172,29 +180,14 @@ main(int argc,char *argv[]){
     }//close season
 
     fclose(ar);
-    number_of_microcephaly=number_of_microcephaly+CountingLast(H);
-    fprintf(arq,"%d %d %d %d %d %d %d %d %d\n",number_of_microcephaly,NumPregInf[0],NumPregInf[1],NumPregInf[2],NumPregInf[3],VacVector[0],VacVector[1],VacVector[2],VacVector[3]);
+    PregBaby[0]=PregBaby[1]=PregBaby[2]=PregBaby[3]=0;
+    number_of_microcephaly=number_of_microcephaly+CountingLast(H,PregBaby);
+
+    fprintf(arquPregBaby,"%d %d %d %d %d\n",182*numberofseason+timecount,PregBaby[0],PregBaby[1],PregBaby[2],PregBaby[3]);
+
+    fprintf(arq,"%d %d %d %d %d %d %d %d %d %d\n",sim,number_of_microcephaly,NumPregInf[0],NumPregInf[1],NumPregInf[2],NumPregInf[3],VacVector[0],VacVector[1],VacVector[2],VacVector[3]);
     //Number of Babies with microcephaly, number of infected pregnants in 1st 2nd and 3rd trimester, number of vaccinated people for age, number of vaccinated pregnant, number of immune vac people, number of immune vac preg
-
-//    printf("END OF SIM\n");
-//    aux2=aux3=aux4=0;
-//    for(i=0;i<N;i++){
-//printf("%d %d %d %d\n",H[i].pregnant,H[i].timepregnant,H[i].age,H[i].gender);
-//if(H[i].pregnant==1){
-//if(H[i].timepregnant<=90) aux2++;
-//else{
-//if(H[i].timepregnant<=180) aux3++;
-//else aux4++;
-//}
-//}
-////getchar();
-//}
-
-
-   //printf("Numm==%d %d %d %d %d %d\n",aux2,aux3,aux4,aux2+aux3+aux4,NumPregInf[0],NumPregInf[1]);
-//
-//getchar();
-
+    fclose(arquPregBaby);
     free(M);
     free(H);
   }//close sim

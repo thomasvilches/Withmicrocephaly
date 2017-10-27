@@ -1,7 +1,7 @@
 void BiteTransmission(struct Human *H,struct Mosquito *M){
 
   int totalbitestoday,i,numberofNI,random;
-  float rd,ProbBite;
+  float rd,ProbBite,vaccine_reduction;
 
   int *NonIsolated=malloc(N*sizeof(int));
   totalbitestoday=0;
@@ -29,8 +29,11 @@ void BiteTransmission(struct Human *H,struct Mosquito *M){
 	if(M[i].health==3){
 	  if(H[NonIsolated[random]].health==1){
 	    //printf("ok2\n");
-      	    rd=(float)rand()/(RAND_MAX+1.);
-	    if(rd<prob_infection_MtoH){
+	    if(H[NonIsolated[random]].Vaccination>0) vaccine_reduction=H[NonIsolated[random]].VacEff;
+	    else vaccine_reduction=0;
+
+        rd=(float)rand()/(RAND_MAX+1.);
+	    if(rd<prob_infection_MtoH*(1-vaccine_reduction)){
 	      H[NonIsolated[random]].swap=2;
 	      H[NonIsolated[random]].latentfrom=1;
 	    }//close if rand
@@ -53,10 +56,10 @@ void BiteTransmission(struct Human *H,struct Mosquito *M){
 
 	      if(H[NonIsolated[random]].health==3){//asymp
 		//printf("ok5\n");
-		rd=(float)rand()/(RAND_MAX+1.);
-		if(rd<prob_infection_HtoM*reduction_factor){
-		  M[i].swap=2;
-		}//close if rand
+            rd=(float)rand()/(RAND_MAX+1.);
+            if(rd<prob_infection_HtoM*reduction_factor){
+              M[i].swap=2;
+            }//close if rand
 	      }//close if person 3
 	    }//close else person
 
@@ -74,14 +77,16 @@ void Sexual_interaction(struct Human *H){
   ///Find the person who have partners
 
   int i,numberofWHS;
-  float rd,prob_have_sex,proboftransmission;
+  float rd,prob_have_sex,proboftransmission,vaccination_reduction;
 
 
   for(i=0;i<N;i++){
     if(H[i].partner>-1){
       proboftransmission=0;
-
+        vaccination_reduction=0;
       if(H[H[i].partner].health==1){//if the partner is susc
+        if(H[H[i].partner].Vaccination>0) vaccination_reduction=H[H[i].partner].VacEff;
+
 	///testing the states of the sexual partners
 	if(H[i].health==4){
 	  prob_have_sex=(float)(H[i].sexfrequency-H[i].cumulativesex)/(7.0-H[i].cumulativedays);
@@ -165,7 +170,7 @@ void Sexual_interaction(struct Human *H){
 
 
 	rd=(float)rand()/(RAND_MAX+1.);
-	if(rd<proboftransmission){
+	if(rd<proboftransmission*(1-vaccination_reduction)){
 
 	  //printf("partner=%d %d\n",H[i].partner,i);
 	  // getchar();

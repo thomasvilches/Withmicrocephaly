@@ -92,6 +92,8 @@ void ProbMicrocephaly(struct Human *H,int i,int NumPregInf[4]){
         rd=(float)rand()/(RAND_MAX+1.);
         if(rd<rn) H[i].microcephaly=1;
 
+        H[i].InfTrim=1;
+
     }
     else{
         if(H[i].timepregnant<=180){
@@ -104,9 +106,12 @@ void ProbMicrocephaly(struct Human *H,int i,int NumPregInf[4]){
             rd=(float)rand()/(RAND_MAX+1.);
             if(rd<rn) H[i].microcephaly=1;
 
+            H[i].InfTrim=2;
+
         }
         else{
-        NumPregInf[2]++;
+            NumPregInf[2]++;
+            H[i].InfTrim=3;
 //printf("i=%d\n",i);
 //printf("%d %d %d %d %d\n",H[i].health,H[i].Vaccination,H[i].pregnant,H[i].timepregnant,H[i].timevaccination);
     //getchar();
@@ -115,14 +120,14 @@ void ProbMicrocephaly(struct Human *H,int i,int NumPregInf[4]){
   }
 }
 
-int update_pregnant(struct Human *H,int NumberInAge[7],int **PregAgeGroup,int NumPregInf[4],int VacVector[4]){
+int update_pregnant(struct Human *H,int NumberInAge[7],int **PregAgeGroup,int NumPregInf[4],int VacVector[4],int PregBaby[4]){
 
     int i,number_of_borns,rd,aux;
     float rn,ran;
     number_of_borns=0;
-    FILE *arpreg;
+    //FILE *arpreg;
 
-    arpreg=fopen("statepreg.dat","a");
+    //arpreg=fopen("statepreg.dat","a");
 
     for(i=0;i<7;i++) NumberInAge[i]=0;
 
@@ -147,11 +152,12 @@ int update_pregnant(struct Human *H,int NumberInAge[7],int **PregAgeGroup,int Nu
         if(H[i].pregnant==1){
             if(H[i].timepregnant>Time_Preg_Max){
                 if(H[i].microcephaly==1){
-                number_of_borns++;
-                fprintf(arpreg,"%d\n",H[i].Vaccination);
-                //printf("test %d %d %d\n",i,H[i].timepregnant,H[i].pregnant);
+                    number_of_borns++;
+                    //fprintf(arpreg,"%d\n",H[i].Vaccination);
+                    PregBaby[H[i].InfTrim-1]++;
+                    //printf("test %d %d %d\n",i,H[i].timepregnant,H[i].pregnant);
                 }
-
+                PregBaby[3]++;
                 H[i].pregnant=-1;
                 H[i].microcephaly=-1;
                 H[i].timepregnant=0;
@@ -174,13 +180,9 @@ int update_pregnant(struct Human *H,int NumberInAge[7],int **PregAgeGroup,int Nu
                                     rn=(float)rand()/RAND_MAX;
 
                                     if(rn<=Vac_Cover_Preg){
-                                        rn=(float)rand()/RAND_MAX;
-                                        if(rn<vac_eff){
                                             H[aux].Vaccination=2;
                                            // H[aux].health=6;
                                             H[aux].timevaccination=0;
-
-                                        }
                                         VacVector[1]++;
                                     }//close if
                                 }
@@ -195,12 +197,11 @@ int update_pregnant(struct Human *H,int NumberInAge[7],int **PregAgeGroup,int Nu
                                         rn=(float)rand()/RAND_MAX;
 
                                         if(rn<=Vac_Cover_Preg){
-                                            rn=(float)rand()/RAND_MAX;
-                                            if(rn<vac_eff){
+
                                             H[aux].Vaccination=2;
                                            // H[aux].health=6;
                                             H[aux].timevaccination=0;
-                                            }
+
                                             VacVector[1]++;
                                         }//close if
                                     }
@@ -218,11 +219,10 @@ int update_pregnant(struct Human *H,int NumberInAge[7],int **PregAgeGroup,int Nu
                                                         rn=(float)rand()/RAND_MAX;
 
                                                         if(rn<=Vac_Cover_Preg){
-                                                            rn=(float)rand()/RAND_MAX;
-                                                            if(rn<vac_eff){
+
                                                                 H[aux].Vaccination=2;
                                                                 H[aux].timevaccination=0;
-                                                            }
+
                                                             VacVector[1]++;
                                                         }//close if
                                                     }//close if age
@@ -245,12 +245,11 @@ int update_pregnant(struct Human *H,int NumberInAge[7],int **PregAgeGroup,int Nu
                                     rn=(float)rand()/RAND_MAX;
 
                                     if(rn<=Vac_Cover_Preg){
-                                        rn=(float)rand()/RAND_MAX;
-                                        if(rn<vac_eff){
+
                                             H[i].Vaccination=2;
                                             //H[i].health=6;
                                             H[i].timevaccination=0;
-                                        }
+
                                         VacVector[1]++;
                                     }//close if
                                 }
@@ -267,11 +266,10 @@ int update_pregnant(struct Human *H,int NumberInAge[7],int **PregAgeGroup,int Nu
                                             rn=(float)rand()/RAND_MAX;
 
                                             if(rn<=Vac_Cover_Preg){
-                                                rn=(float)rand()/RAND_MAX;
-                                                if(rn<vac_eff){
+
                                                     H[i].Vaccination=2;
                                                     H[i].timevaccination=0;
-                                                }
+
                                                 VacVector[1]++;
                                             }//close if
                                         }//close if age
@@ -290,11 +288,10 @@ int update_pregnant(struct Human *H,int NumberInAge[7],int **PregAgeGroup,int Nu
                                                         rn=(float)rand()/RAND_MAX;
 
                                                         if(rn<=Vac_Cover_Preg){
-                                                            rn=(float)rand()/RAND_MAX;
-                                                            if(rn<vac_eff){
+
                                                                 H[i].Vaccination=2;
                                                                 H[i].timevaccination=0;
-                                                            }
+
                                                             VacVector[1]++;
                                                         }//close if
                                                     }
@@ -314,31 +311,32 @@ int update_pregnant(struct Human *H,int NumberInAge[7],int **PregAgeGroup,int Nu
             }//close time
             }
           }//close for i
-fclose(arpreg);
+//fclose(arpreg);
   return(number_of_borns);
 }
 
 
-int CountingLast(struct Human *H){
+int CountingLast(struct Human *H,int PregBaby[3]){
 
   int i,number;
   float rd;
-  FILE *arpreg;
+ // FILE *arpreg;
 
-    arpreg=fopen("statepreg.dat","a");
+   // arpreg=fopen("statepreg.dat","a");
 
   number=0;
   for(i=0;i<N;i++){
     if(H[i].pregnant==1){
       if(H[i].microcephaly==1){
       number++;
-        fprintf(arpreg,"%d\n",H[i].Vaccination);
+       // fprintf(arpreg,"%d\n",H[i].Vaccination);
+        PregBaby[H[i].InfTrim-1]++;
       }
 
     }//close if pregnant
   }//close for
 
-  fclose(arpreg);
+  //fclose(arpreg);
   return(number);
 
 }

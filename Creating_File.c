@@ -15,10 +15,10 @@ main(){
 
   Symp=Alocar_matriz_inteira(lines,Num);
   Asymp=Alocar_matriz_inteira(lines,Num);
-  arq=fopen("symp4.dat","w");
-  Asym=fopen("asymp4.dat","w");
+  arq=fopen("symp6.dat","w");
+  Asym=fopen("asymp6.dat","w");
   for(i=0;i<Num;i++){
-    sprintf(name,"server/test4/tt%d.dat",i);
+    sprintf(name,"server/test6/tt%d.dat",i);
 
     ar=fopen(name,"r");
 

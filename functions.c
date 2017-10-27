@@ -16,11 +16,10 @@ void increase_timestateH(struct Human *H,int VacVector[4]){
             if(H[i].health<4){/// are Latent people and assymp suitable to vaccination and the recovered from them???
                 rn=(float)rand()/RAND_MAX;
                 if(rn<=Vac_Cover_Norm){
-                    rn=(float)rand()/RAND_MAX;
-                    if(rn<vac_eff){
+
                         H[i].Vaccination=1;
                         H[i].timevaccination=0;
-                    }
+
                     VacVector[0]++;
                 }
             }
@@ -30,11 +29,10 @@ void increase_timestateH(struct Human *H,int VacVector[4]){
 
                         rn=(float)rand()/RAND_MAX;
                         if(rn<=Vac_Cover_Norm){
-                            rn=(float)rand()/RAND_MAX;
-                            if(rn<vac_eff){
+
                                 H[i].Vaccination=1;
                                 H[i].timevaccination=0;
-                            }
+
                             VacVector[0]++;
                         }
 
@@ -44,16 +42,6 @@ void increase_timestateH(struct Human *H,int VacVector[4]){
         }//close if age
     }//close if agedays
 /*------------------------------------------- VACCINATION HERE---------------------------------*/
-    if(H[i].Vaccination>0){
-        H[i].timevaccination++;
-        if(H[i].timevaccination>=Time_of_immunization){
-            if(H[i].health==1){
-              H[i].swap=6;
-              if(H[i].Vaccination/2) VacVector[3]++;
-            else VacVector[2]++;
-            }
-        }
-    }
 /*---------------------------------------------------------------------------------------------*/
     if(H[i].timeinstate>H[i].statetime){
 
