@@ -1,7 +1,7 @@
 //# general parameters
 #define sim_time  100       //## time of simulation - 2 years in days
 #define N 10000 //Number of Humans
-#define NM 20000//Number of Mosquitos
+#define NM 50000//Number of Mosquitos
 
 //1.9 - 20000, 2.2- 50000, 2.8 - 100000
 
@@ -40,10 +40,13 @@
 #define h_lognormal_symptomatic_shape 1.54 // ## mean 4.7
 #define h_lognormal_symptomatic_scale 0.12
 
-#define prob_infection_MtoH 0.5183
-#define prob_infection_HtoM 0.5183
+#define prob_infection_MtoH 0.3195
+#define prob_infection_HtoM 0.3195
 #define ProbIsolationSymptomatic 0.1
-#define reduction_factor 0.3
+#define reduction_factor 0.5
+
+#define sextransMin 0.01
+#define sextransMax 0.05
 
 #define condom_reduction 0.0
 
@@ -57,13 +60,13 @@
 
 
 #define Vac_Cover_Norm 0.0
-#define Vac_Cover_Preg 0.5
+#define Vac_Cover_Preg 0.0
 #define Time_of_immunization 0
 #define Min_age_vac 9
 #define Max_age_vac 45
 #define Min_age_vac_preg 15
 #define Max_age_vac_preg 50
-#define vac_eff_min 0.5
-#define vac_eff_max 0.9
+#define vac_eff_min 1.0
+#define vac_eff_max 1.0
 
 #define NR_END 1

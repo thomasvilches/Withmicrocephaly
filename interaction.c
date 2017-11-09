@@ -170,10 +170,10 @@ void Sexual_interaction(struct Human *H){
 
 
 	rd=(float)rand()/(RAND_MAX+1.);
-	if(rd<proboftransmission*(1-vaccination_reduction)){
+	if(rd<proboftransmission*(1.0-vaccination_reduction)){
 
-	  //printf("partner=%d %d\n",H[i].partner,i);
-	  // getchar();
+	 // printf("partner=%d %d\n",H[i].partner,i);
+	   //getchar();
 	  H[H[i].partner].swap=2;
 	  H[H[i].partner].latentfrom=2;
 	}//close if transmission

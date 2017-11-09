@@ -47,7 +47,7 @@ void setup_pregnant(struct Human *H,int NumberInAge[7],int **PregAgeGroup,float 
 
 	//printf("r=%d %d\n",rd,PregAgeGroup[group][rn]);
 	//	getchar();
-
+    TotalNumberofPreg++;
 	H[PregAgeGroup[group][rn]].pregnant=1;
 	H[PregAgeGroup[group][rn]].timepregnant=Time_Preg_Max*((float)rand()/RAND_MAX);//starting a random time
 
@@ -169,7 +169,7 @@ int update_pregnant(struct Human *H,int NumberInAge[7],int **PregAgeGroup,int Nu
                     aux=PregAgeGroup[H[i].PregnantAgeGroup][rd];
 
                     PregAgeGroup[H[i].PregnantAgeGroup][rd]=i;
-
+                    TotalNumberofPreg++;
                     H[aux].pregnant=1;
                     H[aux].timepregnant=0;
 
@@ -237,7 +237,7 @@ int update_pregnant(struct Human *H,int NumberInAge[7],int **PregAgeGroup,int Nu
                 }//close if number
               else{
                 H[i].pregnant=1;
-
+                TotalNumberofPreg++;
                 if(H[i].health==1){/////same question: are latent and assymp people suitable to vaccination???
                     if(H[i].Vaccination==0){
                             if(H[i].age>=Min_age_vac_preg){

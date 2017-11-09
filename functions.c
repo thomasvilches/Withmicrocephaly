@@ -87,7 +87,7 @@ void increase_timestateM(struct Mosquito *M){
 }
 
 
-void update_human(struct Human *H,int UpDating[4],int NumPregInf[3],int VacVector[4]){
+void update_human(struct Human *H,int UpDating[6],int NumPregInf[3],int VacVector[4]){
 
   int i,d;
   float rd;
@@ -95,71 +95,74 @@ void update_human(struct Human *H,int UpDating[4],int NumPregInf[3],int VacVecto
   for(i=0;i<N;i++){
 
     if(H[i].swap==2){
-
       H[i].health=2;
       d=log_normal_sample(exp(h_lognormal_latent_scale),exp(h_lognormal_latent_shape),rand());
       H[i].statetime=max(4,min(d,h_latency_max));
       H[i].timeinstate=0;
       H[i].swap=-1;
       UpDating[0]++;
+      if(H[i].latentfrom==1) UpDating[4]++;
+      else{ UpDating[5]++;
+     // printf("error = %d",i);
+      }
       ProbMicrocephaly(H,i,NumPregInf);
     }//close if swap 2
     else{
 
       if(H[i].swap==3){
-	H[i].health=3;
-	d=log_normal_sample(exp(h_lognormal_symptomatic_scale),exp(h_lognormal_symptomatic_shape),rand());
-	H[i].statetime=max(3,min(d,h_symptomatic_max));
-	H[i].cumulativedays=0;
-	H[i].cumulativesex=0;
-	rd=(float)rand()/RAND_MAX;
+        H[i].health=3;
+        d=log_normal_sample(exp(h_lognormal_symptomatic_scale),exp(h_lognormal_symptomatic_shape),rand());
+        H[i].statetime=max(3,min(d,h_symptomatic_max));
+        H[i].cumulativedays=0;
+        H[i].cumulativesex=0;
+        rd=(float)rand()/RAND_MAX;
 
-	H[i].sexprobability=rd*(0.05-0.01)+0.01;
-	H[i].timeinstate=0;
-	H[i].swap=-1;
-	UpDating[1]++;
+        H[i].sexprobability=rd*(sextransMax-sextransMin)+sextransMin;
+        H[i].timeinstate=0;
+        H[i].swap=-1;
+        UpDating[1]++;
 
       }//close if
       else{
-	if(H[i].swap==4){
-	  H[i].health=4;
-	  d=log_normal_sample(exp(h_lognormal_symptomatic_scale),exp(h_lognormal_symptomatic_shape),rand());
-	  H[i].statetime=max(3,min(d,h_symptomatic_max));
-	  H[i].cumulativedays=0;
-	  H[i].cumulativesex=0;
-	  rd=(float)rand()/RAND_MAX;
+        if(H[i].swap==4){
+          H[i].health=4;
+          d=log_normal_sample(exp(h_lognormal_symptomatic_scale),exp(h_lognormal_symptomatic_shape),rand());
+          H[i].statetime=max(3,min(d,h_symptomatic_max));
+          H[i].cumulativedays=0;
+          H[i].cumulativesex=0;
+          rd=(float)rand()/RAND_MAX;
 
-	  H[i].sexprobability=rd*(0.05-0.01)+0.01;
-	  H[i].timeinstate=0;
-	  H[i].swap=-1;
-	  UpDating[2]++;
-	}//close if
-	else{
-	  if(H[i].swap==5){
-	    H[i].health=5;
-	    d=log_normal_sample(exp(h_lognormal_symptomatic_scale),exp(h_lognormal_symptomatic_shape),rand());
-	    H[i].statetime=max(3,min(d,h_symptomatic_max));
-	    H[i].cumulativedays=0;
-	    H[i].cumulativesex=0;
-	    rd=(float)rand()/RAND_MAX;
+          H[i].sexprobability=rd*(sextransMax-sextransMin)+sextransMin;
+          H[i].timeinstate=0;
+          H[i].swap=-1;
+          UpDating[2]++;
+        }//close if
+        else{
+          if(H[i].swap==5){
+            H[i].health=5;
+            d=log_normal_sample(exp(h_lognormal_symptomatic_scale),exp(h_lognormal_symptomatic_shape),rand());
+            H[i].statetime=max(3,min(d,h_symptomatic_max));
+            H[i].cumulativedays=0;
+            H[i].cumulativesex=0;
+            rd=(float)rand()/RAND_MAX;
 
-	    H[i].sexprobability=rd*(0.05-0.01)+0.01;
-	    H[i].timeinstate=0;
-	    H[i].swap=-1;
-	    UpDating[2]++;
-	  }//close if
-	  else{
-	    if(H[i].swap==6){
+            H[i].sexprobability=rd*(sextransMax-sextransMin)+sextransMin;
+            H[i].timeinstate=0;
+            H[i].swap=-1;
+            UpDating[2]++;
+          }//close if
+          else{
+            if(H[i].swap==6){
 
-	      H[i].recoveredfrom=H[i].health;
-	      H[i].health=6;
-	      H[i].statetime=999;
-	      H[i].timeinstate=0;
-	      H[i].swap=-1;
-	      UpDating[3]++;
-	    }//close if
-	  }//close 4th else
-	}//close 3rd else
+              H[i].recoveredfrom=H[i].health;
+              H[i].health=6;
+              H[i].statetime=999;
+              H[i].timeinstate=0;
+              H[i].swap=-1;
+              UpDating[3]++;
+            }//close if
+          }//close 4th else
+        }//close 3rd else
       }//close 2nd else
     }//close 1st else
   }//close for i

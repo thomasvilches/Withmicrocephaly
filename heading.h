@@ -28,7 +28,7 @@ struct Human{
   int timevaccination;
   int agedays;
   int InfTrim;
-  int VacEff
+  float VacEff
 };
 
 struct Mosquito{
@@ -52,7 +52,7 @@ int ParameterSex(int age,int gender,float dist_men[7][6],float dist_women[7][6])
 void setup_pregnant(struct Human *H,int NumberInAge[7],int **PregAgeGroup,float distPreg[7]);
 void vaccination(struct Human *H,int VacVector[4]);
 void increase_timestateH(struct Human *H,int VacVector[4]);
-void update_human(struct Human *H,int UpDating[4],int NumPregInf[4],int VacVector[4]);
+void update_human(struct Human *H,int UpDating[6],int NumPregInf[4],int VacVector[4]);
 int update_pregnant(struct Human *H,int NumberInAge[7],int **PregAgeGroup,int NumPregInf[4],int VacVector[4],int PregBaby[4]);
 
 
@@ -76,7 +76,7 @@ int *ivector(long nl, long nh);
 void nrerror(char error_text[]);
 int max(int a,int b);
 int min(int a,int b);
-int season;//summer= 0 winter = 1
+int season,TotalNumberofPreg;//summer= 0 winter = 1
 
 
 ////////////////////////////////////////

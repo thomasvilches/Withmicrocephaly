@@ -14,7 +14,7 @@ main(int argc,char *argv[]){
 
       //struct Human *H;
       //struct Mosquito *M;
-    int i,j,controlSeason,timecount,d,rn,susc,latent,symp,asymp,sympiso,rec,numberofseason,sim,begin,end,seed,UpDating[4],core,NumberInAge[7],**PregAgeGroup,number_of_microcephaly,aux2,aux3,aux4;
+    int i,j,controlSeason,timecount,d,rn,susc,latent,symp,asymp,sympiso,rec,numberofseason,sim,begin,end,seed,UpDating[6],core,NumberInAge[7],**PregAgeGroup,number_of_microcephaly,aux2,aux3,aux4;
     int NumPregInf[4],VacVector[4],PregBaby[4];
     float dist[2][60],rd,distAge[60],soma,distPreg[7];
     FILE *ar,*arq,*arqu,*arquPregBaby;
@@ -32,6 +32,7 @@ main(int argc,char *argv[]){
     fclose(arqu);
 
 
+
     begin=atoi(argv[1]);
     end=atoi(argv[2]);
     seed=atoi(argv[3]);
@@ -44,7 +45,7 @@ main(int argc,char *argv[]){
   /////starting simulations
 
   //getchar();
-  sprintf(directory,"teste/");
+  sprintf(directory,"teste8/");
   sprintf(namecore,"%sNoM%d.dat",directory,core);
 
   arq=fopen(namecore,"w");
@@ -57,6 +58,8 @@ main(int argc,char *argv[]){
     sprintf(name,"%stt%d.dat",directory,sim);//name of the file
 
     arquPregBaby=fopen(namePreg,"w");
+
+    TotalNumberofPreg=0;
 
     for(i=0;i<4;i++){
       NumPregInf[i]=0;
@@ -112,7 +115,7 @@ main(int argc,char *argv[]){
 
           d=log_normal_sample(exp(h_lognormal_latent_scale),exp(h_lognormal_latent_shape),rand());
           //printf("d=%d\n",d);
-          H[rn].statetime=max(4,min(d,h_latency_max));
+          H[rn].statetime=max(h_latency_min,min(d,h_latency_max));
           H[rn].timeinstate=0;
           H[rn].swap=-1;
           ProbMicrocephaly(H,rn,NumPregInf);
@@ -136,27 +139,30 @@ main(int argc,char *argv[]){
     season=0;
     controlSeason=1;
 
-    for(i=0;i<4;i++) UpDating[i]=0;
-
+    for(i=0;i<6;i++) UpDating[i]=0;
+    PregBaby[0]=PregBaby[1]=PregBaby[2]=PregBaby[3]=0;
     /////////Here the loop for time must begin
     for(numberofseason=0;numberofseason<4;numberofseason++){
 //printf("chegou\n");
 //getchar();
       for(timecount=0;timecount<182;timecount++){
 
-            fprintf(ar,"%d %d %d %d %d\n",182*numberofseason+timecount,UpDating[0],UpDating[1],UpDating[2],UpDating[3]);
-            for(i=0;i<4;i++) UpDating[i]=0;
+            fprintf(ar,"%d %d %d %d %d %d %d\n",182*numberofseason+timecount,UpDating[0],UpDating[1],UpDating[2],UpDating[3],UpDating[4],UpDating[5]);
+            fprintf(arquPregBaby,"%d %d %d %d %d %d %d %d %d\n",182*numberofseason+timecount,PregBaby[0],PregBaby[1],PregBaby[2],PregBaby[3],NumPregInf[0],NumPregInf[1],NumPregInf[2],NumPregInf[3]);
 
+            for(i=0;i<4;i++) NumPregInf[i]=0;
+            for(i=0;i<6;i++) UpDating[i]=0;
+            PregBaby[0]=PregBaby[1]=PregBaby[2]=PregBaby[3]=0;
             //printf("ok5\n");
 
                 BiteTransmission(H,M);
 
                 Sexual_interaction(H);
 
-                PregBaby[0]=PregBaby[1]=PregBaby[2]=PregBaby[3]=0;
+
                 number_of_microcephaly=number_of_microcephaly+update_pregnant(H,NumberInAge,PregAgeGroup,NumPregInf,VacVector,PregBaby);
 
-                fprintf(arquPregBaby,"%d %d %d %d %d\n",182*numberofseason+timecount,PregBaby[0],PregBaby[1],PregBaby[2],PregBaby[3]);
+
 
                 increase_timestateH(H,VacVector);
 
@@ -183,9 +189,9 @@ main(int argc,char *argv[]){
     PregBaby[0]=PregBaby[1]=PregBaby[2]=PregBaby[3]=0;
     number_of_microcephaly=number_of_microcephaly+CountingLast(H,PregBaby);
 
-    fprintf(arquPregBaby,"%d %d %d %d %d\n",182*numberofseason+timecount,PregBaby[0],PregBaby[1],PregBaby[2],PregBaby[3]);
 
-    fprintf(arq,"%d %d %d %d %d %d %d %d %d %d\n",sim,number_of_microcephaly,NumPregInf[0],NumPregInf[1],NumPregInf[2],NumPregInf[3],VacVector[0],VacVector[1],VacVector[2],VacVector[3]);
+    fprintf(arquPregBaby,"%d %d %d %d %d %d %d %d %d\n",182*numberofseason+timecount,PregBaby[0],PregBaby[1],PregBaby[2],PregBaby[3],NumPregInf[0],NumPregInf[1],NumPregInf[2],NumPregInf[3]);
+    fprintf(arq,"%d %d %d %d %d %d %d\n",sim,number_of_microcephaly,VacVector[0],VacVector[1],VacVector[2],VacVector[3],TotalNumberofPreg);
     //Number of Babies with microcephaly, number of infected pregnants in 1st 2nd and 3rd trimester, number of vaccinated people for age, number of vaccinated pregnant, number of immune vac people, number of immune vac preg
     fclose(arquPregBaby);
     free(M);
